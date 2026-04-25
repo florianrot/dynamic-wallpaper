@@ -48,6 +48,9 @@ def main():
     if mutex is None:
         sys.exit(0)
 
+    from start_menu import ensure_shortcut
+    ensure_shortcut()
+
     from config import Config
     from engine import WallpaperEngine
     from settings_api import SettingsApi
