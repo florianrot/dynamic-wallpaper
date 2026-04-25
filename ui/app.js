@@ -1,18 +1,26 @@
 // Dynamic Wallpaper — Settings UI
-const api = window.pywebview ? window.pywebview.api : null;
+function api() { return window.pywebview && window.pywebview.api; }
 
 const folderPathEl = document.getElementById("folder_path");
 const folderInfoEl = document.getElementById("folder_info");
+const folderPreview = document.getElementById("folder_preview");
 const btnBrowse = document.getElementById("btn_browse");
 const scheduleList = document.getElementById("schedule_list");
 const btnAdd = document.getElementById("btn_add");
 const lockscreenToggle = document.getElementById("lockscreen_toggle");
 const autostartToggle = document.getElementById("autostart_toggle");
+const trayToggle = document.getElementById("tray_toggle");
+const themeToggle = document.getElementById("theme_toggle");
 const errorEl = document.getElementById("error");
 
 let schedule = [];
 let thumbnails = [];
 let saveTimeout = null;
+
+// Natural sort: "1.png" before "2.png" before "10.png"
+function natSort(a, b) {
+  return a.file.localeCompare(b.file, undefined, { numeric: true, sensitivity: "base" });
+}
 
 function showError(msg) {
   errorEl.textContent = msg;
@@ -30,10 +38,13 @@ function debouncedSave() {
 
 async function saveAll() {
   try {
-    const resp = await api.save_config({
+    const theme = themeToggle.checked ? "light" : "dark";
+    const resp = await api().save_config({
       schedule: schedule,
       lockscreen: lockscreenToggle.checked,
       autostart: autostartToggle.checked,
+      theme: theme,
+      show_tray: trayToggle.checked,
     });
     if (resp && resp.ok) clearError();
     else showError("Save failed: " + (resp && resp.error || "unknown"));
@@ -59,9 +70,33 @@ document.addEventListener("click", (e) => {
   }
 });
 
+function renderFolderPreview() {
+  folderPreview.innerHTML = "";
+  if (thumbnails.length === 0) {
+    folderPreview.style.display = "none";
+    return;
+  }
+  folderPreview.style.display = "";
+  const sorted = thumbnails.slice().sort(natSort);
+  for (const thumb of sorted) {
+    if (!thumb.data_url) continue;
+    const item = document.createElement("div");
+    item.className = "folder-thumb";
+    const img = document.createElement("img");
+    img.src = thumb.data_url;
+    img.alt = thumb.file;
+    item.appendChild(img);
+    const label = document.createElement("span");
+    label.textContent = thumb.file;
+    item.appendChild(label);
+    folderPreview.appendChild(item);
+  }
+}
+
 function renderSchedule() {
   const sorted = schedule.slice().sort((a, b) => a.time < b.time ? -1 : a.time > b.time ? 1 : 0);
   scheduleList.innerHTML = "";
+  const thumbsSorted = thumbnails.slice().sort(natSort);
 
   for (const entry of sorted) {
     const row = document.createElement("div");
@@ -103,7 +138,7 @@ function renderSchedule() {
     const dropdown = document.createElement("div");
     dropdown.className = "img-picker__dropdown";
 
-    for (const thumb of thumbnails) {
+    for (const thumb of thumbsSorted) {
       const opt = document.createElement("div");
       opt.className = "img-picker__option" + (thumb.file === entry.file ? " selected" : "");
 
@@ -156,7 +191,7 @@ function renderSchedule() {
 
 async function loadThumbnails() {
   try {
-    const resp = await api.get_thumbnails();
+    const resp = await api().get_thumbnails();
     if (resp && resp.ok) {
       thumbnails = resp.thumbnails || [];
     }
@@ -165,9 +200,14 @@ async function loadThumbnails() {
   }
 }
 
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  themeToggle.checked = theme === "light";
+}
+
 async function load() {
   try {
-    const resp = await api.get_config();
+    const resp = await api().get_config();
     if (!resp || !resp.ok) {
       showError("Failed to load: " + (resp && resp.error || "unknown"));
       return;
@@ -175,9 +215,7 @@ async function load() {
     clearError();
 
     // Theme
-    if (resp.theme) {
-      document.documentElement.setAttribute("data-theme", resp.theme);
-    }
+    applyTheme(resp.theme || "dark");
 
     // Folder
     if (resp.folder) {
@@ -195,8 +233,10 @@ async function load() {
     schedule = (resp.schedule || []).map(s => ({ ...s }));
     lockscreenToggle.checked = !!resp.lockscreen;
     autostartToggle.checked = !!resp.autostart;
+    trayToggle.checked = resp.show_tray !== false;
 
     await loadThumbnails();
+    renderFolderPreview();
     renderSchedule();
   } catch (e) {
     showError("Load error: " + e.message);
@@ -205,15 +245,16 @@ async function load() {
 
 btnBrowse.addEventListener("click", async () => {
   try {
-    const resp = await api.browse_folder();
+    const resp = await api().browse_folder();
     if (!resp || !resp.ok) return;
     folderPathEl.textContent = resp.folder;
     const images = resp.images || [];
     folderInfoEl.textContent = images.length > 0
       ? `${images.length} images found`
       : "No images found.";
-    await api.save_config({ folder: resp.folder });
+    await api().save_config({ folder: resp.folder });
     await loadThumbnails();
+    renderFolderPreview();
     renderSchedule();
     clearError();
   } catch (e) {
@@ -229,11 +270,18 @@ btnAdd.addEventListener("click", () => {
 
 lockscreenToggle.addEventListener("change", debouncedSave);
 autostartToggle.addEventListener("change", debouncedSave);
+trayToggle.addEventListener("change", debouncedSave);
+
+themeToggle.addEventListener("change", () => {
+  const theme = themeToggle.checked ? "light" : "dark";
+  applyTheme(theme);
+  debouncedSave();
+});
 
 function onReady() {
   let tries = 0;
   const check = () => {
-    if (window.pywebview && window.pywebview.api) {
+    if (api()) {
       load();
       return;
     }
@@ -245,6 +293,16 @@ function onReady() {
   };
   check();
 }
+
+// Footer link: open in external browser
+document.getElementById("footer_link").addEventListener("click", (e) => {
+  e.preventDefault();
+  try {
+    api().open_url("https://florianrothenbuehler.com");
+  } catch {
+    window.open("https://florianrothenbuehler.com", "_blank");
+  }
+});
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", onReady);

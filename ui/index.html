@@ -22,6 +22,7 @@
         <button class="btn" id="btn_browse">Browse</button>
       </div>
       <div class="folder-info" id="folder_info"></div>
+      <div class="folder-preview" id="folder_preview" style="display:none"></div>
     </div>
 
     <!-- Schedule -->
@@ -50,12 +51,28 @@
         </label>
         <span class="toggle-row__label">Start with Windows</span>
       </div>
+      <div class="toggle-row">
+        <label class="toggle">
+          <input type="checkbox" id="tray_toggle">
+          <span class="toggle__box"></span>
+        </label>
+        <span class="toggle-row__label">Show tray icon</span>
+      </div>
+      <div class="toggle-row">
+        <label class="toggle">
+          <input type="checkbox" id="theme_toggle">
+          <span class="toggle__box"></span>
+        </label>
+        <span class="toggle-row__label">Light mode</span>
+      </div>
     </div>
 
     <div id="error" class="error" style="display:none"></div>
   </div>
 
-  <div class="footer">Made by Florian Rothenbühler</div>
+  <div class="footer">
+    Made by <a href="https://florianrothenbuehler.com" class="footer__link" id="footer_link">Florian Rothenbühler</a>
+  </div>
 </div>
 
 <script src="app.js"></script>

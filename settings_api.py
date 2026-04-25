@@ -14,11 +14,18 @@ class SettingsApi:
         self._config = config
         self._engine = engine
         self._thumbnails_cache: dict[str, list] | None = None
+        self._tray_callback = None
+
+    def set_tray_callback(self, cb):
+        self._tray_callback = cb
 
     def get_config(self) -> dict:
         status = self._engine.get_status()
         folder = self._config.get("folder", "")
         images = scan_folder(folder) if folder else []
+        saved_theme = self._config.get("theme", "")
+        theme = saved_theme if saved_theme in ("dark", "light") else get_system_theme()
+
         return {
             "ok": True,
             "folder": folder,
@@ -29,12 +36,13 @@ class SettingsApi:
             "current_file": status.get("current_file"),
             "next_change": status.get("next_change"),
             "running": status.get("running", False),
-            "theme": get_system_theme(),
+            "theme": theme,
+            "show_tray": self._config.get("show_tray", True),
         }
 
     def save_config(self, data: dict) -> dict:
         try:
-            allowed = ("folder", "schedule", "lockscreen", "autostart")
+            allowed = ("folder", "schedule", "lockscreen", "autostart", "theme", "show_tray")
             for k, v in data.items():
                 if k in allowed:
                     self._config.data[k] = v
@@ -45,6 +53,9 @@ class SettingsApi:
 
             if "folder" in data:
                 self._thumbnails_cache = None
+
+            if "show_tray" in data and self._tray_callback:
+                self._tray_callback()
 
             self._engine.reload()
             return {"ok": True}
@@ -102,6 +113,11 @@ class SettingsApi:
 
         self._thumbnails_cache = {"_folder": folder, "items": thumbs}
         return {"ok": True, "thumbnails": thumbs}
+
+    @staticmethod
+    def open_url(url: str):
+        import webbrowser
+        webbrowser.open(url)
 
     @staticmethod
     def _sync_autostart(enabled: bool):

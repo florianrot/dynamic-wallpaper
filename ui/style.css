@@ -230,8 +230,8 @@ body {
 }
 
 .img-picker__thumb {
-  width: 40px;
-  height: 24px;
+  width: 64px;
+  height: 36px;
   object-fit: cover;
   border-radius: 4px;
   flex-shrink: 0;
@@ -256,7 +256,8 @@ body {
   top: calc(100% + 4px);
   left: 0;
   right: 0;
-  max-height: 240px;
+  min-width: 280px;
+  max-height: 320px;
   overflow-y: auto;
   background: var(--bg);
   border: 1px solid var(--border-hover);
@@ -264,7 +265,6 @@ body {
   padding: 6px;
   z-index: 100;
   box-shadow: 0 10px 32px rgba(0,0,0,0.35);
-  display: none;
 }
 .img-picker__dropdown.open { display: block; }
 
@@ -285,10 +285,10 @@ body {
 }
 
 .img-picker__option img {
-  width: 48px;
-  height: 28px;
+  width: 80px;
+  height: 45px;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: 6px;
   flex-shrink: 0;
 }
 
@@ -350,6 +350,39 @@ body {
   background: var(--toggle-knob-on);
 }
 
+/* ── Folder preview grid ── */
+.folder-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.folder-thumb {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100px;
+}
+.folder-thumb img {
+  width: 100px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+.folder-thumb span {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
+}
+
 /* ── Footer ── */
 .footer {
   text-align: center;
@@ -357,6 +390,15 @@ body {
   font-size: 11.5px;
   color: var(--text-dim);
   letter-spacing: 0.01em;
+}
+.footer__link {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.28s;
+}
+.footer__link:hover {
+  color: var(--text-secondary);
+  text-decoration: underline;
 }
 
 /* ── Error ── */

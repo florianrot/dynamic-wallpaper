@@ -13,6 +13,8 @@ DEFAULTS = {
     "schedule": [],
     "lockscreen": True,
     "autostart": True,
+    "theme": "",
+    "show_tray": True,
 }
 
 

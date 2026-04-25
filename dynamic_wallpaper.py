@@ -62,36 +62,51 @@ def main():
 
     settings_window = None
     tray_icon = None
+    _quitting = False
 
     def show_settings():
-        nonlocal settings_window
         if settings_window:
             try:
                 settings_window.show()
                 settings_window.restore()
-                return
             except Exception:
                 pass
-        ui_path = str(_resource_path("ui/index.html"))
-        settings_window = webview.create_window(
-            "Dynamic Wallpaper",
-            ui_path,
-            js_api=settings,
-            width=560,
-            height=680,
-            resizable=True,
-            on_top=False,
-        )
+
+    def on_closing():
+        nonlocal _quitting
+        if _quitting:
+            return True
+        if settings_window:
+            try:
+                settings_window.hide()
+            except Exception:
+                pass
+        return False
 
     def quit_app():
+        nonlocal _quitting
+        _quitting = True
         engine.stop()
         if tray_icon:
-            tray_icon.stop()
+            try:
+                tray_icon.stop()
+            except Exception:
+                pass
         for w in webview.windows[:]:
             try:
                 w.destroy()
             except Exception:
                 pass
+
+    def update_tray_visibility():
+        show = config.get("show_tray", True)
+        if tray_icon:
+            try:
+                tray_icon.visible = show
+            except Exception:
+                pass
+
+    settings.set_tray_callback(update_tray_visibility)
 
     def start_tray():
         nonlocal tray_icon
@@ -110,6 +125,7 @@ def main():
                 MenuItem("Quit", lambda: quit_app()),
             )
             tray_icon = Icon("DynamicWallpaper", image, "Dynamic Wallpaper", menu)
+            tray_icon.visible = config.get("show_tray", True)
             tray_icon.run()
         except Exception as e:
             print(f"Tray failed: {e}")
@@ -117,7 +133,17 @@ def main():
     tray_thread = threading.Thread(target=start_tray, daemon=True)
     tray_thread.start()
 
-    show_settings()
+    ui_path = str(_resource_path("ui/index.html"))
+    settings_window = webview.create_window(
+        "Dynamic Wallpaper",
+        ui_path,
+        js_api=settings,
+        width=560,
+        height=680,
+        resizable=True,
+    )
+    settings_window.events.closing += on_closing
+
     webview.start(gui="edgechromium", debug=False)
     quit_app()
 
