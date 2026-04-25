@@ -189,21 +189,91 @@ body {
   border-top: 1px solid var(--border);
 }
 
-.schedule-row input[type="time"] {
+/* ── Custom time picker ── */
+.time-picker {
+  position: relative;
+  flex-shrink: 0;
+}
+.time-picker__display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   background: var(--surface);
   border: 1px solid var(--border);
-  color: var(--text);
   border-radius: 8px;
   padding: 6px 10px;
+  cursor: pointer;
+  transition: border-color 0.28s cubic-bezier(0.16,1,0.3,1);
+  min-height: 34px;
+}
+.time-picker__display:hover {
+  border-color: var(--border-hover);
+}
+.time-picker__display.open {
+  border-color: var(--border-strong);
+}
+.time-picker__value {
   font-family: inherit;
   font-size: 13px;
-  width: 110px;
-  flex-shrink: 0;
-  transition: border-color 0.28s cubic-bezier(0.16,1,0.3,1);
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
 }
-.schedule-row input[type="time"]:focus {
-  outline: none;
-  border-color: var(--border-strong);
+.time-picker__icon {
+  width: 14px;
+  height: 14px;
+  opacity: 0.5;
+}
+.time-picker__icon path {
+  stroke: var(--text);
+}
+.time-picker__dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  background: var(--bg);
+  border: 1px solid var(--border-hover);
+  border-radius: 12px;
+  padding: 8px;
+  z-index: 100;
+  box-shadow: 0 10px 32px rgba(0,0,0,0.35);
+  flex-direction: row;
+  gap: 4px;
+}
+.time-picker__dropdown.open {
+  display: flex;
+}
+.time-picker__col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+.time-picker__col::-webkit-scrollbar { width: 4px; }
+.time-picker__col::-webkit-scrollbar-thumb {
+  background: var(--scrollbar);
+  border-radius: 999px;
+}
+.time-picker__item {
+  padding: 4px 12px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.14s;
+}
+.time-picker__item:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+.time-picker__item.selected {
+  background: var(--surface-strong);
+  color: var(--text);
+  font-weight: 500;
 }
 
 /* ── Image picker (custom dropdown) ── */

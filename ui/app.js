@@ -68,7 +68,99 @@ document.addEventListener("click", (e) => {
   if (!e.target.closest(".img-picker")) {
     closeAllDropdowns();
   }
+  if (!e.target.closest(".time-picker")) {
+    document.querySelectorAll(".time-picker__dropdown.open").forEach(d => d.classList.remove("open"));
+    document.querySelectorAll(".time-picker__display.open").forEach(d => d.classList.remove("open"));
+  }
 });
+
+function createTimePicker(value, onChange) {
+  const [h, m] = (value || "12:00").split(":").map(Number);
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "time-picker";
+
+  const display = document.createElement("div");
+  display.className = "time-picker__display";
+
+  const valSpan = document.createElement("span");
+  valSpan.className = "time-picker__value";
+  valSpan.textContent = String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0");
+
+  const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  icon.setAttribute("class", "time-picker__icon");
+  icon.setAttribute("viewBox", "0 0 24 24");
+  icon.setAttribute("fill", "none");
+  icon.setAttribute("stroke-width", "2");
+  icon.setAttribute("stroke-linecap", "round");
+  const circle = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  circle.setAttribute("d", "M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20z");
+  const hand1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  hand1.setAttribute("d", "M12 6v6l4 2");
+  icon.appendChild(circle);
+  icon.appendChild(hand1);
+
+  display.appendChild(valSpan);
+  display.appendChild(icon);
+
+  const dropdown = document.createElement("div");
+  dropdown.className = "time-picker__dropdown";
+
+  const hourCol = document.createElement("div");
+  hourCol.className = "time-picker__col";
+  for (let i = 0; i < 24; i++) {
+    const item = document.createElement("div");
+    item.className = "time-picker__item" + (i === h ? " selected" : "");
+    item.textContent = String(i).padStart(2, "0");
+    item.addEventListener("click", (e) => {
+      e.stopPropagation();
+      hourCol.querySelectorAll(".selected").forEach(s => s.classList.remove("selected"));
+      item.classList.add("selected");
+      const curMin = valSpan.textContent.split(":")[1];
+      const newTime = String(i).padStart(2, "0") + ":" + curMin;
+      valSpan.textContent = newTime;
+      onChange(newTime);
+    });
+    hourCol.appendChild(item);
+  }
+
+  const minCol = document.createElement("div");
+  minCol.className = "time-picker__col";
+  for (let i = 0; i < 60; i += 5) {
+    const item = document.createElement("div");
+    item.className = "time-picker__item" + (i === m ? " selected" : "");
+    item.textContent = String(i).padStart(2, "0");
+    item.addEventListener("click", (e) => {
+      e.stopPropagation();
+      minCol.querySelectorAll(".selected").forEach(s => s.classList.remove("selected"));
+      item.classList.add("selected");
+      const curHour = valSpan.textContent.split(":")[0];
+      const newTime = curHour + ":" + String(i).padStart(2, "0");
+      valSpan.textContent = newTime;
+      onChange(newTime);
+    });
+    minCol.appendChild(item);
+  }
+
+  dropdown.appendChild(hourCol);
+  dropdown.appendChild(minCol);
+
+  display.addEventListener("click", (e) => {
+    e.stopPropagation();
+    document.querySelectorAll(".time-picker__dropdown.open").forEach(d => { if (d !== dropdown) d.classList.remove("open"); });
+    document.querySelectorAll(".time-picker__display.open").forEach(d => { if (d !== display) d.classList.remove("open"); });
+    dropdown.classList.toggle("open");
+    display.classList.toggle("open");
+    if (dropdown.classList.contains("open")) {
+      const sel = hourCol.querySelector(".selected");
+      if (sel) sel.scrollIntoView({ block: "center" });
+    }
+  });
+
+  wrapper.appendChild(display);
+  wrapper.appendChild(dropdown);
+  return wrapper;
+}
 
 function renderFolderPreview() {
   folderPreview.innerHTML = "";
@@ -102,12 +194,9 @@ function renderSchedule() {
     const row = document.createElement("div");
     row.className = "schedule-row";
 
-    // Time input
-    const timeInput = document.createElement("input");
-    timeInput.type = "time";
-    timeInput.value = entry.time;
-    timeInput.addEventListener("change", () => {
-      entry.time = timeInput.value;
+    // Custom time picker
+    const timeInput = createTimePicker(entry.time, (newTime) => {
+      entry.time = newTime;
       debouncedSave();
     });
 
