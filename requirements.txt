@@ -1,0 +1,6 @@
+pywebview
+pystray
+Pillow
+winsdk
+pyinstaller
+pywin32

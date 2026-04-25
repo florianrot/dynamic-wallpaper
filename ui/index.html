@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<title>Dynamic Wallpaper</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+  <div class="app__header">
+    <div class="app__title">Dynamic Wallpaper</div>
+    <div class="app__subtitle">Automatically change your wallpaper based on the time of day.</div>
+  </div>
+
+  <div class="app__body">
+    <!-- Folder -->
+    <div class="section">
+      <div class="section__title">Wallpaper Folder</div>
+      <div class="folder-row">
+        <div class="folder-path" id="folder_path">No folder selected</div>
+        <button class="btn" id="btn_browse">Browse</button>
+      </div>
+      <div class="folder-info" id="folder_info"></div>
+    </div>
+
+    <!-- Schedule -->
+    <div class="section">
+      <div class="section__title">Schedule</div>
+      <div id="schedule_list"></div>
+      <div class="schedule-footer">
+        <button class="btn btn--sm" id="btn_add">+ Add Time Slot</button>
+      </div>
+    </div>
+
+    <!-- Options -->
+    <div class="section">
+      <div class="section__title">Options</div>
+      <div class="toggle-row">
+        <label class="toggle">
+          <input type="checkbox" id="lockscreen_toggle">
+          <span class="toggle__box"></span>
+        </label>
+        <span class="toggle-row__label">Also set lock screen wallpaper</span>
+      </div>
+      <div class="toggle-row">
+        <label class="toggle">
+          <input type="checkbox" id="autostart_toggle">
+          <span class="toggle__box"></span>
+        </label>
+        <span class="toggle-row__label">Start with Windows</span>
+      </div>
+    </div>
+
+    <div id="error" class="error" style="display:none"></div>
+  </div>
+
+  <div class="footer">Made by Florian Rothenbühler</div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
