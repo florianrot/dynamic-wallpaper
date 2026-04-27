@@ -576,8 +576,15 @@ def _setup_tray(window):
             img = Image.new("RGBA", (64, 64), (15, 15, 15, 255))
 
         def on_open(icon, item):
+            global _tray_icon
             window.show()
             window.restore()
+            if _api_ref and not _api_ref._config.get("show_tray_icon", True):
+                try:
+                    icon.stop()
+                except Exception:
+                    pass
+                _tray_icon = None
 
         def on_quit(icon, item):
             icon.stop()
