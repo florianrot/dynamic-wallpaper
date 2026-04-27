@@ -76,11 +76,11 @@ function initSidebarResize() {
 
   const tooltip = handle.querySelector(".sidebar__resize-tooltip");
   if (tooltip) {
-    handle.addEventListener("mouseenter", () => {
+    handle.addEventListener("mousemove", (e) => {
       const sidebar = document.querySelector(".sidebar");
       const sidebarRect = sidebar.getBoundingClientRect();
       tooltip.style.left = (sidebarRect.right + 12) + "px";
-      tooltip.style.top = (sidebarRect.top + sidebarRect.height / 2) + "px";
+      tooltip.style.top = e.clientY + "px";
       tooltip.style.transform = "translateY(-50%)";
     });
   }

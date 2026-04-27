@@ -47,6 +47,7 @@
   "settings.about.title": "Über",
   "settings.about.description": "Dynamic Wallpaper — ändert automatisch dein Desktop-Hintergrundbild nach Zeitplan.",
   "settings.about.made_by": "Erstellt von",
+  "settings.about.view_github": "Auf GitHub ansehen",
 
   "wallpaper.folder": "Ordner",
   "wallpaper.browse": "Durchsuchen",
@@ -142,6 +143,7 @@
   "cmd.dark_mode": "Dunkelmodus aktivieren",
   "cmd.light_mode": "Hellmodus aktivieren",
   "cmd.change_language": "Sprache ändern",
+  "cmd.shortcuts": "Tastaturkürzel",
   "cmd.ask_question": "Frage stellen",
   "cmd.report_bug": "Fehler melden",
 

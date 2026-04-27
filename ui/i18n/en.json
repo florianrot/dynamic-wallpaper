@@ -47,6 +47,7 @@
   "settings.about.title": "About",
   "settings.about.description": "Dynamic Wallpaper — automatically change your desktop wallpaper on a schedule.",
   "settings.about.made_by": "Made by",
+  "settings.about.view_github": "View on GitHub",
 
   "wallpaper.folder": "Folder",
   "wallpaper.browse": "Browse",
@@ -142,6 +143,7 @@
   "cmd.dark_mode": "Switch to Dark Mode",
   "cmd.light_mode": "Switch to Light Mode",
   "cmd.change_language": "Change Language",
+  "cmd.shortcuts": "Keyboard Shortcuts",
   "cmd.ask_question": "Ask a Question",
   "cmd.report_bug": "Report a Bug",
 

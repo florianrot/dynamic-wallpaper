@@ -88,12 +88,13 @@
 /* ── Link ── */
 
 .link {
-  color: var(--text-secondary);
+  color: var(--text);
   text-decoration: none;
-  border-bottom: 1px solid transparent;
+  border-bottom: 1px solid var(--border-hover);
+  opacity: 0.7;
   transition: all var(--t-fast) var(--ease);
 }
 .link:hover {
-  color: var(--text);
+  opacity: 1;
   border-bottom-color: var(--text-muted);
 }

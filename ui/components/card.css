@@ -155,3 +155,15 @@
   margin-top: 6px;
   line-height: 1.5;
 }
+
+.changelog__entry--linked {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: border-color var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+}
+.changelog__entry--linked:hover {
+  border-color: var(--border-hover);
+  background: var(--surface-hover);
+}

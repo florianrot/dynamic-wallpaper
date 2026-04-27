@@ -12,7 +12,7 @@ from core.scanner import scan_folder
 from core.updater import Updater
 
 APP_NAME = "Dynamic Wallpaper"
-VERSION  = "2.0.0"
+VERSION  = "2.2.0"
 MUTEX_NAME = "Global\\FlorianRDynamicWallpaper"
 
 BASE = Path(__file__).resolve().parent
@@ -69,6 +69,12 @@ WORKER_BASE = "https://support.florianrothenbuehler.com"
 
 
 _NO_WINDOW = 0x08000000
+
+
+def _build_exe_cmd():
+    if getattr(sys, "frozen", False):
+        return f'"{sys.executable}" --minimized'
+    return f'"{sys.executable}" "{Path(__file__).resolve()}" --minimized'
 
 
 def _create_scheduled_task(name, exe_cmd):
@@ -209,6 +215,37 @@ def _cleanup_legacy():
             winreg.CloseKey(key)
         except Exception:
             pass
+    _remove_scheduled_task("DynamicWallpaper")
+    # v1 task was at root level, not under FlorianR\
+    import subprocess
+    try:
+        subprocess.run(
+            ["schtasks", "/Delete", "/TN", "DynamicWallpaper", "/F"],
+            capture_output=True, timeout=10, creationflags=_NO_WINDOW,
+        )
+    except Exception:
+        pass
+
+
+def _reconcile_autostart(cfg):
+    enabled = cfg.get("start_with_windows", False)
+    visible = cfg.get("autostart_visible", False)
+    cmd = _build_exe_cmd()
+    if visible:
+        if enabled:
+            _set_run_key(APP_NAME, cmd)
+            _set_startup_approved(APP_NAME, True)
+        else:
+            _remove_run_key(APP_NAME)
+            _remove_startup_approved(APP_NAME)
+        _remove_scheduled_task(APP_NAME)
+    else:
+        _remove_run_key(APP_NAME)
+        _remove_startup_approved(APP_NAME)
+        if enabled:
+            _create_scheduled_task(APP_NAME, cmd)
+        else:
+            _remove_scheduled_task(APP_NAME)
 
 
 class Api:
@@ -257,9 +294,7 @@ class Api:
         return {"ok": True}
 
     def _exe_cmd(self):
-        if getattr(sys, "frozen", False):
-            return f'"{sys.executable}" --minimized'
-        return f'"{sys.executable}" "{Path(__file__).resolve()}" --minimized'
+        return _build_exe_cmd()
 
     def set_autostart(self, enabled):
         visible = self._config.get("autostart_visible", False)
@@ -640,6 +675,8 @@ def main():
     _api_ref = api
     cfg = api._config
 
+    _reconcile_autostart(cfg)
+
     engine = WallpaperEngine(cfg)
     api._engine = engine
     engine.start()
@@ -655,6 +692,9 @@ def main():
     x = cfg["window"].get("x")
     y = cfg["window"].get("y")
 
+    _should_minimize = "--minimized" in sys.argv
+    _has_tray = cfg.get("show_tray_icon", True)
+
     global _window
     _window = webview.create_window(
         APP_NAME,
@@ -664,15 +704,16 @@ def main():
         x=x, y=y,
         min_size=(480, 400),
         background_color="#0a0a0a",
+        minimized=(_should_minimize and not _has_tray),
     )
 
     _window.events.loaded += _on_loaded
     _window.events.closing += _on_closing
 
-    if cfg.get("show_tray_icon", True):
+    if _has_tray:
         _setup_tray(_window)
 
-    if "--minimized" in sys.argv and cfg.get("show_tray_icon", True):
+    if _should_minimize and _has_tray:
         _window.events.loaded += lambda: _window.hide()
 
     webview.start(debug=("--debug" in sys.argv))

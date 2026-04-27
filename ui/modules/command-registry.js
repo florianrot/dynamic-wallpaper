@@ -126,6 +126,7 @@ function initCommandRegistry() {
     // DW-specific actions
     { id: "action.browse_folder", title: t("cmd.browse_folder"), keywords: ["folder", "ordner", "wallpaper", "browse", "durchsuchen"], group: t("cmd.group.actions"), handler: () => onBrowseFolder() },
     { id: "action.toggle_lockscreen", title: t("cmd.toggle_lockscreen"), keywords: ["lock", "screen", "sperrbildschirm", "sync"], group: t("cmd.group.actions"), handler: () => { const el = document.getElementById("lockscreen_toggle"); if (el) { el.checked = !el.checked; el.dispatchEvent(new Event("change")); } } },
+    { id: "action.shortcuts", title: t("cmd.shortcuts"), keywords: ["shortcut", "keyboard", "tastenkürzel", "tastatur"], group: t("cmd.group.actions"), shortcut: "?", handler: () => toggleShortcuts() },
     { id: "action.check_updates", title: t("cmd.check_updates"), keywords: ["update", "version", "aktualisieren"], group: t("cmd.group.actions"), handler: () => openSettings("about") },
 
     // Help
