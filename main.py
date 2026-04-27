@@ -28,7 +28,22 @@ def _ensure_single_instance():
     k32 = ctypes.windll.kernel32
     _mutex = k32.CreateMutexW(None, True, MUTEX_NAME)
     if k32.GetLastError() == 183:
+        _activate_existing_window()
         sys.exit(0)
+
+
+def _activate_existing_window():
+    try:
+        import win32gui, win32con
+        def callback(hwnd, _):
+            if win32gui.IsWindow(hwnd) and APP_NAME in win32gui.GetWindowText(hwnd):
+                win32gui.ShowWindow(hwnd, win32con.SW_RESTORE)
+                win32gui.SetForegroundWindow(hwnd)
+                return False
+            return True
+        win32gui.EnumWindows(callback, None)
+    except Exception:
+        pass
 
 
 def _apply_dwm(hwnd):
@@ -177,6 +192,23 @@ def _remove_startup_approved(name):
         winreg.CloseKey(key)
     except Exception:
         pass
+
+
+def _cleanup_legacy():
+    import winreg
+    for subkey in (
+        r"Software\Microsoft\Windows\CurrentVersion\Run",
+        r"Software\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run",
+    ):
+        try:
+            key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, subkey, 0, winreg.KEY_SET_VALUE)
+            try:
+                winreg.DeleteValue(key, "DynamicWallpaper")
+            except FileNotFoundError:
+                pass
+            winreg.CloseKey(key)
+        except Exception:
+            pass
 
 
 class Api:
@@ -536,26 +568,33 @@ def _on_loaded():
 
 def _save_window_geometry():
     try:
-        if _window:
-            cfg = _window.js_api._config
-            cfg["window"] = {
+        if _window and _api_ref:
+            _api_ref._config["window"] = {
                 "x": _window.x, "y": _window.y,
                 "w": _window.width, "h": _window.height,
             }
-            save_config(cfg)
+            save_config(_api_ref._config)
     except Exception:
         pass
 
 
+_api_ref = None
+
+
 def _on_closing():
-    _save_window_geometry()
-    if _window and _window.js_api._config.get("close_to_tray") and _tray_icon:
-        _window.hide()
-        return False
-    if _window and _window.js_api._engine:
-        _window.js_api._engine.stop()
-    if _window and _window.js_api._updater:
-        _window.js_api._updater.stop()
+    try:
+        _save_window_geometry()
+        close_to_tray = _api_ref._config.get("close_to_tray", False) if _api_ref else False
+        if close_to_tray and _tray_icon:
+            _window.hide()
+            return False
+    except Exception:
+        pass
+    if _api_ref:
+        if _api_ref._engine:
+            _api_ref._engine.stop()
+        if _api_ref._updater:
+            _api_ref._updater.stop()
     if _tray_icon:
         _tray_icon.stop()
     return True
@@ -587,6 +626,7 @@ def _create_start_menu_shortcut():
 
 def main():
     _ensure_single_instance()
+    _cleanup_legacy()
 
     try:
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("FlorianR.DynamicWallpaper.Desktop.2")
@@ -595,7 +635,9 @@ def main():
 
     _create_start_menu_shortcut()
 
+    global _api_ref
     api = Api()
+    _api_ref = api
     cfg = api._config
 
     engine = WallpaperEngine(cfg)
