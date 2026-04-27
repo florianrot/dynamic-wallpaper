@@ -12,7 +12,7 @@ from core.scanner import scan_folder
 from core.updater import Updater
 
 APP_NAME = "Dynamic Wallpaper"
-VERSION  = "2.2.0"
+VERSION  = "2.2.1"
 MUTEX_NAME = "Global\\FlorianRDynamicWallpaper"
 
 BASE = Path(__file__).resolve().parent
@@ -620,7 +620,9 @@ def _on_closing():
     try:
         _save_window_geometry()
         close_to_tray = _api_ref._config.get("close_to_tray", False) if _api_ref else False
-        if close_to_tray and _tray_icon:
+        if close_to_tray:
+            if not _tray_icon:
+                _setup_tray(_window)
             _window.hide()
             return False
     except Exception:
