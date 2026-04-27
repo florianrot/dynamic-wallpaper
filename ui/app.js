@@ -18,6 +18,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   initGlobalClickHandlers();
   initTooltips();
 
+  const versionEl = document.getElementById('about_version');
+  if (versionEl) versionEl.textContent = `v${info.version}`;
+  const versionTextEl = document.getElementById('about_version_text');
+  if (versionTextEl) versionTextEl.textContent = `v${info.version}`;
+
   await initLibrary();
   await initSchedule();
 
