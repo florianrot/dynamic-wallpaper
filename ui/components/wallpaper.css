@@ -1,0 +1,328 @@
+/* ── DW Status ── */
+.dw-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.dw-status .status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dw-status .status-dot--online { background: var(--success); }
+.dw-status .status-dot--offline { background: var(--text-muted); }
+.dw-status .status-dot--pulse { animation: statusPulse 2s ease-in-out infinite; }
+@keyframes statusPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ── Folder ── */
+.dw-folder-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.dw-folder-path {
+  flex: 1;
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dw-folder-count {
+  flex-shrink: 0;
+  background: var(--surface-strong);
+  color: var(--text-secondary);
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* ── Thumbnail Grid ── */
+.dw-thumbnail-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+/* ── Thumbnail Size Controls ── */
+.dw-thumb-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.dw-thumb-size-btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--t-fast) var(--ease);
+}
+.dw-thumb-size-btn svg { width: 14px; height: 14px; }
+.dw-thumb-size-btn:hover { background: var(--surface-hover); border-color: var(--border-hover); color: var(--text); }
+.dw-thumb-size-btn:active { transform: scale(0.92); }
+.dw-thumb-size-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  min-width: 24px;
+  text-align: center;
+}
+
+.dw-thumbnail-grid:empty { display: none; }
+.dw-thumb {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: var(--dw-thumb-width, 100px);
+}
+.dw-thumb img {
+  width: var(--dw-thumb-width, 100px);
+  height: calc(var(--dw-thumb-width, 100px) * 0.56);
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  transition: border-color var(--t) var(--ease);
+}
+.dw-thumb:hover img {
+  border-color: var(--border-hover);
+}
+.dw-thumb span {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: var(--dw-thumb-width, 100px);
+}
+
+/* ── Schedule Delete Button ── */
+.dw-delete-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all var(--t-fast) var(--ease);
+}
+.dw-delete-btn svg { width: 16px; height: 16px; }
+.dw-delete-btn:hover { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.2); color: var(--error); }
+.dw-delete-btn:active { transform: scale(0.85); background: rgba(239,68,68,0.15); color: var(--error); transition-duration: 0.06s; }
+
+/* ── Schedule ── */
+.dw-schedule-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  position: relative;
+  z-index: 10;
+}
+.dw-schedule-row + .dw-schedule-row {
+  border-top: 1px solid var(--border);
+}
+.dw-schedule-empty {
+  font-size: 13px;
+  color: var(--text-muted);
+  padding: 8px 0;
+}
+
+/* ── Custom Time Picker ── */
+.time-picker {
+  position: relative;
+  flex-shrink: 0;
+}
+.time-picker__display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: border-color var(--t) var(--ease);
+  min-height: 34px;
+}
+.time-picker__display:hover { border-color: var(--border-hover); }
+.time-picker__display.open { border-color: var(--border-strong); }
+input.time-picker__value {
+  width: 44px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  font-family: var(--font);
+  font-size: 13px;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  outline: none;
+}
+input.time-picker__value:focus {
+  color: var(--accent);
+}
+.time-picker__icon {
+  width: 14px;
+  height: 14px;
+  opacity: 0.5;
+}
+.time-picker__icon path { stroke: var(--text); }
+.time-picker__dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  background: var(--bg-elevated, var(--bg));
+  border: 1px solid var(--border-hover);
+  border-radius: var(--radius);
+  padding: 8px;
+  z-index: 100;
+  box-shadow: var(--shadow-lg, 0 10px 32px rgba(0,0,0,0.35));
+  flex-direction: row;
+  gap: 4px;
+}
+.time-picker__dropdown.open { display: flex; }
+.time-picker__col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+.time-picker__col::-webkit-scrollbar { width: 4px; }
+.time-picker__col::-webkit-scrollbar-thumb {
+  background: var(--scrollbar);
+  border-radius: 999px;
+}
+.time-picker__item {
+  padding: 4px 12px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  transition: background var(--t-fast) var(--ease);
+}
+.time-picker__item:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+.time-picker__item.selected {
+  background: var(--surface-strong);
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* ── Image Picker ── */
+.img-picker {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+.img-picker__selected {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: border-color var(--t) var(--ease);
+  min-height: 36px;
+}
+.img-picker__selected:hover { border-color: var(--border-hover); }
+.img-picker__thumb {
+  width: 64px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.img-picker__name {
+  font-size: 12.5px;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.img-picker__placeholder {
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+.img-picker__dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  min-width: 280px;
+  max-height: 320px;
+  overflow-y: auto;
+  background: var(--bg-elevated, var(--bg));
+  border: 1px solid var(--border-hover);
+  border-radius: var(--radius);
+  padding: 6px;
+  z-index: 100;
+  box-shadow: var(--shadow-lg, 0 10px 32px rgba(0,0,0,0.35));
+}
+.img-picker__dropdown.open { display: block; }
+.img-picker__option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease);
+}
+.img-picker__option:hover { background: var(--surface-hover); }
+.img-picker__option.selected { background: var(--surface-strong); }
+.img-picker__option img {
+  width: 80px;
+  height: 45px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+.img-picker__option span {
+  font-size: 12px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

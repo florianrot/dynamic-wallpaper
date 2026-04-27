@@ -1,0 +1,212 @@
+/* ── Navigation Components ── */
+
+/* ── Breadcrumbs ── */
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+.breadcrumbs__item {
+  color: var(--text-muted);
+  text-decoration: none;
+  border: none;
+  background: none;
+  font-family: var(--font);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: var(--radius-xs);
+  transition: all var(--t-fast) var(--ease);
+}
+.breadcrumbs__item:hover {
+  color: var(--text);
+  background: var(--surface);
+}
+.breadcrumbs__item.current {
+  color: var(--text);
+  cursor: default;
+}
+.breadcrumbs__item.current:hover { background: transparent; }
+
+.breadcrumbs__sep {
+  color: var(--text-dim);
+  font-size: 12px;
+}
+
+/* ── Horizontal Tab Bar ── */
+
+.tab-bar {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.tab-bar__indicator {
+  position: absolute;
+  bottom: -1px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: var(--radius-pill);
+  transition: left 0.35s var(--ease), width 0.35s var(--ease);
+}
+
+.tab-bar__item {
+  padding: 10px 18px;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.3s var(--ease);
+}
+.tab-bar__item:hover { color: var(--text-secondary); }
+.tab-bar__item.active { color: var(--text); }
+
+/* ── Back Button ── */
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px 6px 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--t-fast) var(--ease);
+  margin-bottom: 16px;
+}
+.back-btn:hover {
+  background: var(--surface);
+  color: var(--text);
+}
+.back-btn svg { width: 16px; height: 16px; }
+
+/* ── Stepper / Wizard ── */
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 24px;
+}
+
+.stepper__step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stepper__circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: all var(--t) var(--ease);
+  flex-shrink: 0;
+}
+
+.stepper__label {
+  font-size: 13px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  transition: color var(--t) var(--ease);
+}
+
+.stepper__line {
+  flex: 1;
+  height: 2px;
+  background: var(--border);
+  margin: 0 12px;
+  min-width: 24px;
+  transition: background var(--t) var(--ease);
+}
+
+.stepper__step.active .stepper__circle {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--bg);
+}
+.stepper__step.active .stepper__label { color: var(--text); }
+
+.stepper__step.done .stepper__circle {
+  border-color: var(--success);
+  background: var(--success);
+  color: #fff;
+}
+.stepper__step.done .stepper__label { color: var(--text-secondary); }
+.stepper__step.done + .stepper__line { background: var(--success); }
+
+/* ── Accordion / Collapsible ── */
+
+.accordion { display: flex; flex-direction: column; gap: 2px; }
+.accordion__item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  transition: border-color var(--t) var(--ease);
+}
+.accordion__item.open {
+  border-color: var(--border-hover);
+}
+.accordion__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  background: var(--surface-card);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13.5px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease);
+}
+.accordion__header:hover { background: var(--surface); }
+.accordion__chevron {
+  width: 16px;
+  height: 16px;
+  margin-left: auto;
+  color: var(--text-muted);
+  transition: transform var(--t) var(--spring);
+  flex-shrink: 0;
+}
+.accordion__item.open .accordion__chevron { transform: rotate(180deg); }
+.accordion__body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--t-slow) var(--spring);
+}
+.accordion__body-inner {
+  padding: 0 16px 14px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  opacity: 0;
+  transition: opacity var(--t) var(--ease);
+}
+.accordion__item.open .accordion__body-inner {
+  opacity: 1;
+}

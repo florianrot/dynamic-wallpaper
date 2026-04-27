@@ -8,6 +8,8 @@ import threading
 from ctypes import wintypes
 from datetime import time as dtime, datetime
 
+from .scanner import scan_folder
+
 
 def _parse_schedule(schedule_list: list[dict]) -> dict[dtime, str]:
     result: dict[dtime, str] = {}
@@ -142,11 +144,11 @@ class WallpaperEngine:
             set_desktop(img_path)
             self._current_file = target_file
         except Exception as e:
-            print(f"[engine] desktop error: {e}")
+            print(f"[dynamic-wallpaper] desktop error: {e}")
             return
 
         if self._config.get("lockscreen", False):
             try:
                 set_lockscreen(img_path)
             except Exception as e:
-                print(f"[engine] lockscreen error: {e}")
+                print(f"[dynamic-wallpaper] lockscreen error: {e}")

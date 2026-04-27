@@ -1,0 +1,176 @@
+/* ── Design Tokens — AppShell Norm ── */
+
+/* ── Dark Theme ── */
+[data-theme="dark"] {
+  --bg:             #0d0d0d;
+  --bg-content:     #0a0a0a;
+  --bg-elevated:    #161616;
+  --surface:        rgba(255, 255, 255, 0.035);
+  --surface-hover:  rgba(255, 255, 255, 0.06);
+  --surface-strong: rgba(255, 255, 255, 0.09);
+  --surface-card:   rgba(255, 255, 255, 0.025);
+  --border:         rgba(255, 255, 255, 0.08);
+  --border-hover:   rgba(255, 255, 255, 0.16);
+  --border-strong:  rgba(255, 255, 255, 0.24);
+  --border-inner:   rgba(255, 255, 255, 0.06);
+  --text:           #f0f0f0;
+  --text-secondary: #b0b0b0;
+  --text-muted:     #808080;
+  --text-dim:       #5a5a5a;
+  --accent:         #f0f0f0;
+  --accent-strong:  #ffffff;
+  --error:          #ef4444;
+  --success:        #22c55e;
+  --warning:        #f59e0b;
+  --dot:            #ffffff;
+  --modal-backdrop: rgba(0, 0, 0, 0.55);
+  --scrollbar:      rgba(255, 255, 255, 0.15);
+  --scrollbar-hover:rgba(255, 255, 255, 0.28);
+  --shadow-sm:  0 0 0 1px rgba(255,255,255,0.03), 0 1px 3px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.3);
+  --shadow:     0 0 0 1px rgba(255,255,255,0.03), 0 3px 8px rgba(0,0,0,0.25), 0 12px 32px rgba(0,0,0,0.45);
+  --shadow-lg:  0 0 0 1px rgba(255,255,255,0.03), 0 6px 16px rgba(0,0,0,0.3), 0 24px 56px rgba(0,0,0,0.6);
+  --inset-light: inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+/* ── Light Theme ── */
+[data-theme="light"] {
+  --bg:             #f2f2f2;
+  --bg-content:     #eaeaea;
+  --bg-elevated:    #ffffff;
+  --surface:        rgba(0, 0, 0, 0.03);
+  --surface-hover:  rgba(0, 0, 0, 0.05);
+  --surface-strong: rgba(0, 0, 0, 0.08);
+  --surface-card:   rgba(0, 0, 0, 0.02);
+  --border:         rgba(0, 0, 0, 0.08);
+  --border-hover:   rgba(0, 0, 0, 0.14);
+  --border-strong:  rgba(0, 0, 0, 0.22);
+  --border-inner:   rgba(0, 0, 0, 0.05);
+  --text:           #1a1a1a;
+  --text-secondary: #5a5a5a;
+  --text-muted:     #999999;
+  --text-dim:       #bbbbbb;
+  --accent:         #1a1a1a;
+  --accent-strong:  #000000;
+  --error:          #dc2626;
+  --success:        #16a34a;
+  --warning:        #d97706;
+  --dot:            #1a1a1a;
+  --modal-backdrop: rgba(0, 0, 0, 0.35);
+  --scrollbar:      rgba(0, 0, 0, 0.06);
+  --scrollbar-hover:rgba(0, 0, 0, 0.16);
+  --shadow-sm:  0 0 0 1px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.08);
+  --shadow:     0 0 0 1px rgba(0,0,0,0.04), 0 3px 8px rgba(0,0,0,0.08), 0 12px 32px rgba(0,0,0,0.12);
+  --shadow-lg:  0 0 0 1px rgba(0,0,0,0.04), 0 6px 16px rgba(0,0,0,0.1), 0 24px 56px rgba(0,0,0,0.16);
+  --inset-light: inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+/* ── Shared Tokens ── */
+:root {
+  /* Timing */
+  --t:          0.22s;
+  --t-fast:     0.12s;
+  --t-slow:     0.4s;
+  --ease:       cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-fast:  cubic-bezier(0.4, 0, 0.2, 1);
+  --spring:     cubic-bezier(0.2, 0.9, 0.3, 1.1);
+
+  /* Radii */
+  --radius-xs:   4px;
+  --radius-sm:   8px;
+  --radius:      12px;
+  --radius-lg:   18px;
+  --radius-xl:   24px;
+  --radius-pill: 999px;
+
+  /* Shadows — theme-specific overrides in [data-theme] blocks above */
+
+  /* Sidebar */
+  --sidebar-full: 240px;
+  --sidebar-icons: 52px;
+  --sidebar-min: 180px;
+  --sidebar-max: 400px;
+
+  /* Typography */
+  --font: 'Segoe UI Variable', 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+}
+
+/* ── Reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html, body {
+  font-family: var(--font);
+  font-size: 14px;
+  font-feature-settings: 'cv11', 'ss01', 'ss03';
+  letter-spacing: -0.005em;
+  color: var(--text);
+  overflow: hidden;
+  user-select: none;
+  height: 100%;
+  cursor: default;
+}
+
+/* ── Universal Press Feedback ── */
+button,
+[role="button"],
+.link,
+a {
+  transition: transform var(--t-fast) var(--ease), color var(--t-fast) var(--ease), background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease), opacity var(--t-fast) var(--ease);
+}
+button:active,
+[role="button"]:active,
+.link:active,
+a:active {
+  transform: scale(0.97) !important;
+  transition-duration: 0.06s !important;
+}
+/* Stronger press on small icon buttons (X close, copy, etc.) */
+.alert__close:active,
+.banner__close:active,
+.toast__close:active,
+.copy-btn:active,
+.support-close:active,
+.settings-close:active,
+.floating-chat-popup__close:active {
+  transform: scale(0.82) !important;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 12px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar);
+  border-radius: var(--radius-pill);
+  border: 4px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-hover);
+  background-clip: padding-box;
+}
+
+/* ── Reduced Motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Theme Crossfade ── */
+[data-theme-transition] * {
+  transition:
+    background-color 250ms ease,
+    color 250ms ease,
+    border-color 250ms ease,
+    box-shadow 250ms ease,
+    fill 250ms ease,
+    stroke 250ms ease !important;
+}

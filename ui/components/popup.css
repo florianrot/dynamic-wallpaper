@@ -1,0 +1,52 @@
+/* ── Popup Components ── */
+
+/* ── Dropdown (custom) ── */
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown__trigger {
+  cursor: pointer;
+}
+
+.dropdown__panel {
+  position: fixed;
+  min-width: 200px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--inset-light), var(--shadow);
+  padding: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-fast) var(--ease);
+  z-index: 200;
+}
+.dropdown.open .dropdown__panel {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.dropdown__item {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font);
+  font-size: 13px;
+  text-align: left;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--t-fast) var(--ease);
+}
+.dropdown__item:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+.dropdown__item.active {
+  background: var(--surface-strong);
+  color: var(--text);
+}

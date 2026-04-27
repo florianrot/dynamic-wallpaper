@@ -1,45 +1,33 @@
 # -*- mode: python ; coding: utf-8 -*-
+import os
+SPEC_DIR = os.path.dirname(os.path.abspath(SPEC))
 
 a = Analysis(
-    ['dynamic_wallpaper.py'],
-    pathex=[],
-    binaries=[],
+    [os.path.join(SPEC_DIR, 'main.py')],
+    pathex=[SPEC_DIR],
     datas=[
-        ('ui', 'ui'),
-        ('assets', 'assets'),
+        (os.path.join(SPEC_DIR, 'ui'), 'ui'),
+        (os.path.join(SPEC_DIR, 'assets'), 'assets'),
     ],
     hiddenimports=[
         'pystray._win32',
-        'clr_loader',
-        'pythonnet',
+        'core.config',
+        'core.wallpaper_engine',
+        'core.scanner',
+        'core.updater',
+        'win32com.client',
     ],
-    hookspath=[],
-    hooksconfig={},
-    runtime_hooks=[],
     excludes=[],
     noarchive=False,
-    optimize=0,
 )
 pyz = PYZ(a.pure)
-
 exe = EXE(
-    pyz,
-    a.scripts,
-    a.binaries,
-    a.datas,
-    [],
+    pyz, a.scripts, a.binaries, a.datas, [],
     name='DynamicWallpaper',
     debug=False,
-    bootloader_ignore_signals=False,
     strip=False,
     upx=True,
-    upx_exclude=[],
-    runtime_tmpdir=None,
     console=False,
-    disable_windowed_traceback=False,
-    argv_emulation=False,
-    target_arch=None,
-    codesign_identity=None,
-    entitlements_file=None,
-    icon=['assets/icon.ico'],
+    icon=[os.path.join(SPEC_DIR, 'assets', 'icon.ico')],
+    version=os.path.join(SPEC_DIR, 'version_info.txt'),
 )

@@ -1,0 +1,125 @@
+/* ── Keyframes ── */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes popupIn {
+  from { opacity: 0; transform: scale(0.95) translateY(4px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.4; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 3px 0.5px currentColor; }
+  50%      { box-shadow: 0 0 5px 2px currentColor; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes progressIndeterminate {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(400%); }
+}
+
+@keyframes barGrow {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+@keyframes borderSlideIn {
+  from { height: 0; opacity: 0; }
+  to   { height: 20px; opacity: 1; }
+}
+
+@keyframes scaleSpring {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(0.92); }
+  70%  { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+/* ── Utility classes ── */
+
+.anim-fade-in       { animation: fadeIn var(--t-slow) var(--ease) both; }
+.anim-fade-in-up    { animation: fadeInUp 0.35s var(--ease) both; }
+.anim-fade-in-scale { animation: fadeInScale var(--t) var(--spring) both; }
+.anim-slide-in-left { animation: slideInLeft 0.3s var(--ease) both; }
+.anim-pulse         { animation: pulse 2s ease-in-out infinite; }
+.anim-spin          { animation: spin 0.8s linear infinite; }
+
+/* ── Toast ── */
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes toastOut {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(24px); }
+}
+
+/* ── Table row ── */
+
+@keyframes rowFadeIn {
+  from { opacity: 0; transform: translateY(2px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Stagger helper — apply via JS: el.style.setProperty('--i', index) ── */
+.stagger { animation-delay: calc(var(--i, 0) * 40ms); }
+
+/* ── Premium: Toggle Ripple ── */
+@keyframes toggleRipple {
+  0%   { box-shadow: 0 0 0 0 rgba(240, 240, 240, 0.3); }
+  100% { box-shadow: 0 0 0 10px rgba(240, 240, 240, 0); }
+}
+
+/* ── Premium: Focus Glow ── */
+@keyframes focusGlow {
+  0%   { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+  50%  { box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.06); }
+  100% { box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.03); }
+}
+
+/* ── Premium: Page Exit ── */
+@keyframes fadeOutDown {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(6px); }
+}
+
+/* ── Premium: Number Morph ── */
+@keyframes numberPulse {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+/* ── Premium: Shimmer (for skeleton loading) ── */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}

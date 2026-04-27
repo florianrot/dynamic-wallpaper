@@ -1,0 +1,257 @@
+/* ── Floating Popups (outside main window) ── */
+
+.floating-demo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 40px 0;
+}
+
+.floating-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  animation: floatingEnter 0.35s var(--spring) both;
+}
+
+@keyframes floatingEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.95);
+  }
+}
+
+.floating-pill__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.floating-pill__dot--recording {
+  background: var(--error);
+  animation: recordPulse 1.5s ease-in-out infinite;
+}
+@keyframes recordPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.floating-pill__dot--processing {
+  background: var(--warning);
+  animation: spin 1s linear infinite;
+  border: 2px solid var(--warning);
+  border-top-color: transparent;
+  width: 12px;
+  height: 12px;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.floating-pill__text {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.floating-pill__timer {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-muted);
+  min-width: 40px;
+}
+
+.floating-pill__action {
+  border: none;
+  background: var(--surface-strong);
+  color: var(--text);
+  border-radius: var(--radius-xs);
+  padding: 4px 10px;
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease);
+}
+.floating-pill__action:hover {
+  background: var(--surface-hover);
+}
+.floating-pill__action:active {
+  transform: scale(0.95);
+  transition-duration: var(--t-fast);
+}
+.floating-pill__action--stop {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--error);
+}
+.floating-pill__action--stop:hover {
+  background: rgba(239, 68, 68, 0.25);
+}
+
+/* Quick Action Popup */
+.floating-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  animation: floatingEnter 0.35s var(--spring) both;
+}
+.floating-actions__btn {
+  border: none;
+  background: var(--surface);
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  font-family: var(--font);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.floating-actions__btn:hover {
+  background: var(--surface-strong);
+  color: var(--text);
+}
+.floating-actions__btn:active {
+  transform: scale(0.95);
+  transition-duration: var(--t-fast);
+}
+.floating-actions__btn svg { width: 14px; height: 14px; }
+
+/* Mini notification */
+.floating-notification {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  animation: floatingEnter 0.35s var(--spring) both;
+}
+.floating-notification__icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+.floating-notification__icon svg { width: 100%; height: 100%; }
+.floating-notification--success .floating-notification__icon { color: var(--success); }
+.floating-notification--error .floating-notification__icon { color: var(--error); }
+
+/* ── Waveform Recording Style ── */
+
+.floating-pill--waveform {
+  padding: 8px 16px;
+  min-width: 110px;
+  justify-content: center;
+}
+.waveform-bars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 22px;
+}
+.waveform-bar {
+  width: 2px;
+  border-radius: var(--radius-pill);
+  background: var(--text-secondary);
+  animation: waveformPulse 1.2s ease-in-out infinite;
+  animation-delay: calc(var(--d) * 0.07s);
+  min-height: 3px;
+}
+@keyframes waveformPulse {
+  0%, 100% { height: 3px; opacity: 0.35; }
+  35% { height: calc(var(--h, 10) * 1px); opacity: 1; }
+  65% { height: calc(var(--h, 10) * 0.5px); opacity: 0.6; }
+}
+
+.floating-pill__text--phase {
+  transition: opacity 0.2s var(--ease);
+}
+
+/* ── Chat Popup ── */
+
+.floating-chat-popup {
+  width: 320px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  animation: floatingEnter 0.35s var(--spring) both;
+}
+.floating-chat-popup__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.floating-chat-popup__close {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: var(--radius-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.floating-chat-popup__close:hover {
+  background: var(--surface);
+  color: var(--text);
+}
+.floating-chat-popup__messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.floating-chat-popup__input {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-top: 1px solid var(--border);
+}
+.floating-chat-popup__input input {
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 12.5px;
+  padding: 7px 10px;
+  outline: none;
+  transition: border-color var(--t-fast) var(--ease);
+}
+.floating-chat-popup__input input:focus {
+  border-color: var(--border-hover);
+}

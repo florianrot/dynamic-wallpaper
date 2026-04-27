@@ -3,78 +3,265 @@
 <head>
 <meta charset="UTF-8">
 <title>Dynamic Wallpaper</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="animations.css">
+<link rel="stylesheet" href="shell.css">
+<link rel="stylesheet" href="components/form.css">
+<link rel="stylesheet" href="components/button.css">
+<link rel="stylesheet" href="components/card.css">
+<link rel="stylesheet" href="components/modal.css">
+<link rel="stylesheet" href="components/popup.css">
+<link rel="stylesheet" href="components/toast.css">
+<link rel="stylesheet" href="components/alert.css">
+<link rel="stylesheet" href="components/nav.css">
+<link rel="stylesheet" href="components/misc.css">
+<link rel="stylesheet" href="components/effects.css">
+<link rel="stylesheet" href="components/tooltip.css">
+<link rel="stylesheet" href="components/context-menu.css">
+<link rel="stylesheet" href="components/skeleton.css">
+<link rel="stylesheet" href="components/wallpaper.css">
+<link rel="stylesheet" href="components/command-palette.css">
+<link rel="stylesheet" href="components/support.css">
+<link rel="stylesheet" href="components/auth.css">
+<link rel="stylesheet" href="components/chat.css">
+<link rel="stylesheet" href="components/status.css">
+<link rel="stylesheet" href="components/floating.css">
 </head>
 <body>
 
-<div class="app">
-  <div class="app__header">
-    <div class="app__title">Dynamic Wallpaper</div>
-    <div class="app__subtitle">Automatically change your wallpaper based on the time of day.</div>
+<div class="app" data-sidebar="full">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar" data-mode="full">
+
+    <div class="sidebar__header"></div>
+
+    <nav class="sidebar__nav">
+      <div class="sidebar__indicator" id="sidebar_indicator"></div>
+      <button class="nav-item active" data-page="library">
+        <span class="nav-item__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M2 17l5-5 4 4 4-6 5 7"/><circle cx="8" cy="9" r="2"/></svg></span>
+        <span class="nav-item__label" data-i18n="nav.library">Library</span>
+      </button>
+      <button class="nav-item" data-page="schedule">
+        <span class="nav-item__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+        <span class="nav-item__label" data-i18n="nav.schedule">Schedule</span>
+      </button>
+    </nav>
+
+    <div class="sidebar__footer" id="sidebar_profile">
+      <button class="profile-btn" aria-expanded="false" onclick="togglePopup('sidebar_profile')">
+        <div class="profile-avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span class="profile-dot hidden"></span>
+        </div>
+        <span class="profile-name">User</span>
+        <svg class="profile-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="profile-popup">
+        <div class="update-banner profile-popup__update" style="display:none">
+          <span class="dot"></span>
+          <span>Update <span class="update-version"></span> ready</span>
+          <button class="btn btn--xs btn--primary">Restart</button>
+        </div>
+        <button class="popup-item" onclick="openSettings('general')">
+          <span class="popup-item__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+          <span data-i18n="profile.settings">Settings</span>
+        </button>
+        <button class="popup-item" onclick="openSupport()">
+          <span class="popup-item__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+          <span data-i18n="profile.help">Help & Feedback</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="sidebar__resize">
+      <div class="sidebar__resize-tooltip"><span data-i18n="cmd.toggle_sidebar">Seitenleiste umschalten</span> · <kbd>Ctrl</kbd>+<kbd>B</kbd></div>
+    </div>
+  </aside>
+
+  <!-- ── Sidebar Toggle (fixed position, always visible) ── -->
+  <button class="sidebar__toggle" data-tooltip="Seitenleiste umschalten" data-i18n-tooltip="cmd.toggle_sidebar" data-tooltip-shortcut="Ctrl+B" onclick="cycleSidebarMode()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="18" rx="1"/><line x1="14" y1="6" x2="21" y2="6"/><line x1="14" y1="12" x2="21" y2="12"/><line x1="14" y1="18" x2="21" y2="18"/></svg>
+  </button>
+
+  <!-- ── Floating profile (hidden sidebar mode) ── -->
+  <div class="profile-floating" id="floating_profile">
+    <div class="profile-avatar" onclick="togglePopup('floating_profile')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span class="profile-dot hidden"></span>
+    </div>
+    <div class="profile-popup">
+      <div class="update-banner profile-popup__update" style="display:none">
+        <span class="dot"></span>
+        <span>Update <span class="update-version"></span></span>
+        <button class="btn btn--xs btn--primary">Restart</button>
+      </div>
+      <button class="popup-item" onclick="openSettings('general')">
+        <span class="popup-item__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+          <span data-i18n="profile.settings">Settings</span>
+        </button>
+      <button class="popup-item" onclick="openSupport()">
+        <span class="popup-item__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+        <span data-i18n="profile.help">Help & Feedback</span>
+      </button>
+    </div>
   </div>
 
-  <div class="app__body">
-    <!-- Folder -->
-    <div class="section">
-      <div class="section__title">Wallpaper Folder</div>
-      <div class="folder-row">
-        <div class="folder-path" id="folder_path">No folder selected</div>
-        <button class="btn" id="btn_browse">Browse</button>
+  <!-- ── Content ── -->
+  <main class="content">
+    <div class="content__body">
+
+      <!-- ═══ Library ═══ -->
+      <div class="page active" data-page="library">
+        <div class="page-title" data-i18n="nav.library">Library</div>
+
+        <div class="dw-status" id="dw_status"></div>
+
+        <div class="section">
+          <div class="section__label" data-i18n="wallpaper.folder">Folder</div>
+          <div class="dw-folder-row">
+            <div class="dw-folder-path" id="folder_path" data-i18n="wallpaper.no_folder">No folder selected</div>
+            <span class="dw-folder-count badge" id="folder_count" style="display:none"></span>
+            <button class="btn btn--ghost btn--sm" id="btn_browse" data-i18n="wallpaper.browse">Browse</button>
+          </div>
+          <div class="dw-thumb-controls">
+            <button class="dw-thumb-size-btn" onclick="changeThumbSize(-20)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            <span class="dw-thumb-size-label" id="thumb_size_label"></span>
+            <button class="dw-thumb-size-btn" onclick="changeThumbSize(20)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+          </div>
+          <div class="dw-thumbnail-grid" id="thumbnail_grid"></div>
+        </div>
       </div>
-      <div class="folder-info" id="folder_info"></div>
-      <div class="folder-preview" id="folder_preview" style="display:none"></div>
+
+      <!-- ═══ Schedule ═══ -->
+      <div class="page" data-page="schedule">
+        <div class="page-title" data-i18n="nav.schedule">Schedule</div>
+
+        <div class="section" style="position:relative;z-index:2">
+          <div id="schedule_list"></div>
+          <div class="dw-schedule-empty" id="schedule_empty" data-i18n="wallpaper.no_schedule">No schedule configured</div>
+          <div style="margin-top: 12px">
+            <button class="btn btn--ghost btn--sm" id="btn_add_slot" data-i18n="wallpaper.add_entry">Add Time Slot</button>
+          </div>
+        </div>
+
+        <div class="section" style="margin-top:16px;position:relative;z-index:1">
+          <label class="toggle">
+            <input type="checkbox" id="lockscreen_toggle">
+            <span class="toggle__box"><svg class="toggle__check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="toggle__label">
+              <span data-i18n="wallpaper.lockscreen">Sync Lock Screen</span>
+              <div class="toggle__hint" data-i18n="wallpaper.lockscreen_hint">Also change the Windows lock screen wallpaper</div>
+            </span>
+          </label>
+        </div>
+      </div>
+
     </div>
+  </main>
+</div>
 
-    <!-- Schedule -->
-    <div class="section">
-      <div class="section__title">Schedule</div>
-      <div id="schedule_list"></div>
-      <div class="schedule-footer">
-        <button class="btn btn--sm" id="btn_add">+ Add Time Slot</button>
+
+<!-- ── Settings Modal ── -->
+<div class="settings-overlay">
+  <div class="settings-backdrop" onclick="closeSettings()"></div>
+  <div class="settings-modal">
+    <button class="settings-close" onclick="closeSettings()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <nav class="settings-nav">
+      <button class="settings-nav-item active" data-section="general" onclick="activateSettingsSection('general')" data-i18n="settings.nav.general">General</button>
+      <button class="settings-nav-item" data-section="about" onclick="activateSettingsSection('about')" data-i18n="settings.nav.about">About</button>
+    </nav>
+    <div class="settings-content">
+      <!-- ── General (App + Appearance + Language) ── -->
+      <div class="settings-section active" data-section="general">
+        <div class="settings-section__title" data-i18n="settings.general.title">General</div>
+        <label class="toggle"><input type="checkbox" id="settings_autostart" onchange="onSettingToggle('start_with_windows', this)"><span class="toggle__box"><svg class="toggle__check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="toggle__label"><span data-i18n="settings.app.autostart">Start with Windows</span><div class="toggle__hint" data-i18n="settings.app.autostart_hint">Launch automatically at login.</div></span></label>
+        <label class="toggle" style="padding-left:52px"><input type="checkbox" id="settings_autostart_visible" onchange="onSettingToggle('autostart_visible', this)"><span class="toggle__box"><svg class="toggle__check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="toggle__label"><span data-i18n="settings.app.autostart_visible">Show in Windows autostart list</span><div class="toggle__hint" data-i18n="settings.app.autostart_visible_hint">Visible in Task Manager startup tab.</div></span></label>
+        <label class="toggle"><input type="checkbox" id="settings_close_tray" onchange="onSettingToggle('close_to_tray', this)"><span class="toggle__box"><svg class="toggle__check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="toggle__label"><span data-i18n="settings.app.close_to_tray">Close to tray</span><div class="toggle__hint" data-i18n="settings.app.close_to_tray_hint">Minimize to the system tray instead of quitting.</div></span></label>
+        <label class="toggle"><input type="checkbox" id="settings_tray_icon" onchange="onSettingToggle('show_tray_icon', this)"><span class="toggle__box"><svg class="toggle__check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="toggle__label"><span data-i18n="settings.app.show_tray_icon">Show tray icon</span><div class="toggle__hint" data-i18n="settings.app.show_tray_icon_hint">Display the app icon in the system tray.</div></span></label>
+        <div class="divider"></div>
+        <div class="section"><div class="section__label" data-i18n="settings.theme.title">Theme</div><div class="radio-group"><label class="radio"><input type="radio" name="settings-theme" value="auto" onchange="onThemeChange('auto')"><span class="radio__dot"></span><span class="radio__title" data-i18n="settings.theme.auto">Auto</span><span class="radio__hint" data-i18n="settings.theme.auto_hint">Follows system</span></label><label class="radio"><input type="radio" name="settings-theme" value="dark" onchange="onThemeChange('dark')"><span class="radio__dot"></span><span class="radio__title" data-i18n="settings.theme.dark">Dark</span></label><label class="radio"><input type="radio" name="settings-theme" value="light" onchange="onThemeChange('light')"><span class="radio__dot"></span><span class="radio__title" data-i18n="settings.theme.light">Light</span></label></div></div>
+        <div class="section"><div class="section__label" data-i18n="settings.language.title">Language</div><div class="radio-group"><label class="radio"><input type="radio" name="settings-language" value="system" onchange="onLanguageChange('system')"><span class="radio__dot"></span><span class="radio__title" data-i18n="settings.language.system">System</span><span class="radio__hint" data-i18n="settings.language.system_hint">Follows OS language</span></label><label class="radio"><input type="radio" name="settings-language" value="en" onchange="onLanguageChange('en')"><span class="radio__dot"></span><span class="radio__title">English</span></label><label class="radio"><input type="radio" name="settings-language" value="de" onchange="onLanguageChange('de')"><span class="radio__dot"></span><span class="radio__title">Deutsch</span></label></div></div>
+        <div class="divider"></div>
+        <div class="section"><div class="section__label" data-i18n="settings.sidebar.title">Sidebar Mode</div><div class="radio-group"><label class="radio"><input type="radio" name="settings-sidebar" value="full" onchange="onSidebarModeChange('full')"><span class="radio__dot"></span><span class="radio__title" data-i18n="settings.sidebar.full">Full</span><span class="radio__hint" data-i18n="settings.sidebar.full_hint">Icons + Labels</span></label><label class="radio"><input type="radio" name="settings-sidebar" value="icons" onchange="onSidebarModeChange('icons')"><span class="radio__dot"></span><span class="radio__title" data-i18n="settings.sidebar.icons">Icons Only</span></label><label class="radio"><input type="radio" name="settings-sidebar" value="hidden" onchange="onSidebarModeChange('hidden')"><span class="radio__dot"></span><span class="radio__title" data-i18n="settings.sidebar.hidden">Hidden</span></label></div></div>
+        <div class="section"><div class="section__label" data-i18n="settings.sidebar.enabled_title">Enabled Sidebar Modes</div><div class="section__hint" style="margin-bottom:8px">Disable modes you don't need. <kbd>Ctrl</kbd>+<kbd>B</kbd> will skip disabled modes.</div>
+          <label class="toggle"><input type="checkbox" id="mode_full_enabled" checked onchange="onSidebarModeEnabled('full',this)"><span class="toggle__box"><svg class="toggle__check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="toggle__label" data-i18n="settings.sidebar.full_mode">Full mode</span></label>
+          <label class="toggle"><input type="checkbox" id="mode_icons_enabled" checked onchange="onSidebarModeEnabled('icons',this)"><span class="toggle__box"><svg class="toggle__check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="toggle__label" data-i18n="settings.sidebar.icons_mode">Icons-only mode</span></label>
+          <label class="toggle"><input type="checkbox" id="mode_hidden_enabled" checked onchange="onSidebarModeEnabled('hidden',this)"><span class="toggle__box"><svg class="toggle__check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="toggle__label" data-i18n="settings.sidebar.hidden_mode">Hidden mode</span></label>
+        </div>
+      </div>
+      <!-- ── About (About + Updates) ── -->
+      <div class="settings-section" data-section="about">
+        <div class="settings-section__title" data-i18n="settings.about.title">About</div>
+        <div style="font-size:13.5px;color:var(--text-secondary);line-height:1.7;max-width:400px"><div style="margin-bottom:16px"><strong style="color:var(--text)">Dynamic Wallpaper</strong> v2.0.0</div><div style="margin-bottom:16px" data-i18n="settings.about.description">Dynamic Wallpaper — automatically change your desktop wallpaper on a schedule.</div><div><span data-i18n="settings.about.made_by">Made by</span> <a href="https://florianrothenbuehler.com" class="link" onclick="event.preventDefault();api.open_url('https://florianrothenbuehler.com')">Florian Rothenbühler</a></div></div>
+        <div class="divider"></div>
+        <div class="field"><div class="field__label" data-i18n="settings.updates.current_version">Current Version</div><div style="font-size:14px;color:var(--text)">v2.0.0</div></div>
+        <div style="margin-bottom:20px"><button class="btn btn--ghost btn--sm" data-i18n="settings.updates.check">Check for Updates</button></div>
+        <div class="section__label" data-i18n="settings.updates.changelog">Changelog</div>
+        <div class="changelog" id="changelog_list"><div class="changelog__entry"><span class="changelog__version">v2.0.0</span><span class="changelog__date">2026-04-27</span><div class="changelog__notes">Complete rebuild with new App Shell architecture, schedule system, and thumbnail grid.</div></div></div>
       </div>
     </div>
-
-    <!-- Options -->
-    <div class="section">
-      <div class="section__title">Options</div>
-      <div class="toggle-row">
-        <label class="toggle">
-          <input type="checkbox" id="lockscreen_toggle">
-          <span class="toggle__box"></span>
-        </label>
-        <span class="toggle-row__label">Also set lock screen wallpaper</span>
-      </div>
-      <div class="toggle-row">
-        <label class="toggle">
-          <input type="checkbox" id="autostart_toggle">
-          <span class="toggle__box"></span>
-        </label>
-        <span class="toggle-row__label">Start with Windows</span>
-      </div>
-      <div class="toggle-row">
-        <label class="toggle">
-          <input type="checkbox" id="tray_toggle">
-          <span class="toggle__box"></span>
-        </label>
-        <span class="toggle-row__label">Show tray icon</span>
-      </div>
-      <div class="toggle-row">
-        <label class="toggle">
-          <input type="checkbox" id="theme_toggle">
-          <span class="toggle__box"></span>
-        </label>
-        <span class="toggle-row__label">Light mode</span>
-      </div>
-    </div>
-
-    <div id="error" class="error" style="display:none"></div>
-  </div>
-
-  <div class="footer">
-    Made by <a href="https://florianrothenbuehler.com" class="footer__link" id="footer_link">Florian Rothenbühler</a>
   </div>
 </div>
 
+<!-- ── Shortcuts Overlay ── -->
+<div class="shortcuts-overlay" onclick="if(event.target===this)closeShortcuts()">
+  <div class="shortcuts-card">
+    <div class="shortcuts-title" data-i18n="keyboard.title">Keyboard Shortcuts</div>
+    <div class="shortcut-row"><span class="shortcut-row__label" data-i18n="keyboard.toggle_sidebar">Toggle sidebar</span><span class="shortcut-row__keys"><kbd>Ctrl</kbd><kbd>B</kbd></span></div>
+    <div class="shortcut-row"><span class="shortcut-row__label" data-i18n="keyboard.open_settings">Open settings</span><span class="shortcut-row__keys"><kbd>Ctrl</kbd><kbd>,</kbd></span></div>
+    <div class="shortcut-row"><span class="shortcut-row__label" data-i18n="keyboard.command_palette">Command palette</span><span class="shortcut-row__keys"><kbd>Ctrl</kbd><kbd>K</kbd></span></div>
+    <div class="shortcut-row"><span class="shortcut-row__label" data-i18n="keyboard.show_shortcuts">Show shortcuts</span><span class="shortcut-row__keys"><kbd>?</kbd></span></div>
+    <div class="shortcut-row"><span class="shortcut-row__label" data-i18n="keyboard.close_overlay">Close overlay</span><span class="shortcut-row__keys"><kbd>Esc</kbd></span></div>
+    <div class="shortcut-row"><span class="shortcut-row__label" data-i18n="keyboard.navigate_sidebar">Navigate sidebar</span><span class="shortcut-row__keys"><kbd>↑</kbd><kbd>↓</kbd></span></div>
+  </div>
+</div>
+
+<!-- ── Command Palette ── -->
+<div class="cmd-overlay" onclick="if(event.target===this)closeCmdPalette()">
+  <div class="cmd-palette">
+    <div class="cmd-palette__input-wrap">
+      <input class="cmd-palette__input" placeholder="Search commands, pages, settings..." data-i18n-placeholder="cmd.search_placeholder" oninput="onCmdInput(event)" onkeydown="onCmdKeydown(event)">
+      <span class="cmd-palette__shortcut-hint">Ctrl+K</span>
+    </div>
+    <div class="cmd-palette__list"></div>
+  </div>
+</div>
+
+<!-- ── Support Overlay ── -->
+<div class="support-overlay" onclick="if(event.target===this)closeSupport()">
+  <div class="support-backdrop" onclick="closeSupport()"></div>
+  <div class="support-modal">
+    <div class="support-header">
+      <div class="support-header__title" data-i18n="support.title">Help & Support</div>
+      <button class="support-close" onclick="closeSupport()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="support-body" id="support_content"></div>
+  </div>
+</div>
+
+<!-- ── Toast Container ── -->
+<div class="toast-container"></div>
+
+<script src="bridge.js"></script>
+<script src="lib/fuse.min.js"></script>
+<script src="lib/marked.min.js"></script>
+<script src="modules/state.js"></script>
+<script src="modules/i18n.js"></script>
+<script src="modules/command-registry.js"></script>
+
+<script src="modules/toast.js"></script>
+<script src="modules/theme.js"></script>
+<script src="modules/sidebar.js"></script>
+<script src="modules/navigation.js"></script>
+<script src="modules/profile.js"></script>
+<script src="modules/settings.js"></script>
+<script src="modules/support.js"></script>
+<script src="modules/keyboard.js"></script>
+<script src="modules/tooltip.js"></script>
+<script src="modules/context-menu.js"></script>
+<script src="modules/dialog.js"></script>
+<script src="modules/wallpaper.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

@@ -1,49 +1,55 @@
 # Dynamic Wallpaper
 
-Automatically change your desktop wallpaper based on the time of day.
-
-Point it at a folder of images, assign each image to a time slot, and your wallpaper transitions throughout the day — sunrise to sunset to night.
-
-## Download
-
-Grab the latest release from the [Releases page](https://github.com/florianrot/dynamic-wallpaper/releases). No installation needed — just run the `.exe`.
-
-## How it works
-
-1. **Run the app** — it sits in your system tray
-2. **Choose a folder** with your wallpaper images (`.png`, `.jpg`)
-3. **Set up your schedule** — pick which image shows at which time
-4. Done. The wallpaper updates automatically.
+Automatically change your desktop wallpaper based on the time of day. A Windows desktop app for time-based wallpaper rotation.
 
 ## Features
 
-- Time-based wallpaper rotation (any number of images, any schedule)
-- Optional lock screen wallpaper sync
-- Start with Windows toggle
-- Dark and light mode (auto-detects your Windows theme)
-- Thumbnail previews for easy image selection
-- Minimal resource usage — checks once per minute
+- **Time-based schedule** — assign wallpaper images to time slots throughout the day
+- **Lock screen sync** — optionally update the Windows lock screen alongside your desktop
+- **Custom time picker** — intuitive schedule builder with scrollable hour/minute columns or direct keyboard input
+- **Thumbnail preview** — browse your wallpaper folder with adjustable thumbnail sizes
+- **System tray** — runs quietly in the background with a tray icon
+- **Auto-update** — checks for new versions automatically
+- **Dark/Light mode** — follows your Windows theme or set manually
+- **Multi-language** — English and German (Deutsch)
+- **Built-in support** — AI-powered help chat and bug reporting
 
-## Requirements
+## Download
 
-- Windows 10 or 11
-- That's it. Single `.exe`, no dependencies.
+Download the latest `DynamicWallpaper.exe` from [Releases](https://github.com/florianrot/dynamic-wallpaper/releases).
 
-## For wallpaper creators
+No installation needed — just run the EXE.
 
-If you sell or distribute wallpaper packs and want to include time-of-day rotation for Windows users: feel free to bundle this app with your wallpaper sets. It's MIT licensed and works with any image folder.
+## Usage
 
-## Building from source
+1. Open the app and go to **Library**
+2. Click **Browse** to select a folder with your wallpaper images
+3. Go to **Schedule** and click **Add Time Slot**
+4. Set a time and select which image to display
+5. Repeat for different times of day (sunrise, noon, evening, night)
 
-```bash
-pip install -r requirements.txt
-build.bat
-```
+The wallpaper changes automatically every minute based on your schedule.
 
-The built `.exe` will be in `dist/`.
+## Settings
+
+Access settings via the user icon in the sidebar:
+
+- **Start with Windows** — launch at login (minimized to tray)
+- **Close to tray** — minimize instead of quitting
+- **Theme** — Auto, Dark, or Light
+- **Language** — System, English, or Deutsch
+- **Keyboard shortcuts** — `Ctrl+K` command palette, `Ctrl+B` sidebar toggle, `Ctrl+,` settings
+
+## Tech Stack
+
+- Python 3, pywebview (EdgeChromium), pystray, Pillow, winsdk
+- Windows APIs for wallpaper setting and lock screen sync
+- Built with PyInstaller
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT License - see [LICENSE](LICENSE)
 
-Made by [Florian Rothenbühler](https://florianrothenbuehler.com)
+## Author
+
+[Florian Rothenbuehler](https://florianrothenbuehler.com)

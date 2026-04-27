@@ -1,4 +1,4 @@
-"""Scan a folder for wallpaper images (any name, .png/.jpg/.jpeg)."""
+"""Scan a folder for wallpaper images."""
 
 import os
 

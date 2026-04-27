@@ -1,0 +1,40 @@
+/* ── Skeleton Loading ── */
+
+.skeleton {
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  position: relative;
+  overflow: hidden;
+}
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+.skeleton--text {
+  height: 14px;
+  margin-bottom: 8px;
+}
+.skeleton--text:last-child { width: 60%; }
+.skeleton--title {
+  height: 22px;
+  width: 40%;
+  margin-bottom: 12px;
+}
+.skeleton--circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.skeleton--card {
+  height: 120px;
+  border-radius: var(--radius);
+}
+.skeleton--btn {
+  height: 36px;
+  width: 100px;
+  border-radius: var(--radius-pill);
+}

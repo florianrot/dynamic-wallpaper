@@ -1,6 +1,4 @@
-pywebview
-pystray
-Pillow
+pywebview>=5.0
+pystray>=0.19
+Pillow>=10.0
 winsdk
-pyinstaller
-pywin32
